@@ -1,29 +1,25 @@
- {
-  "name": "s2-memory-weaver",
-  "version": "1.0.0",
-  "description": "S2 时空回溯记忆引擎。结合图生视频大模型与空间六要素，通过渐进式素材上传实现高精度个人历史影像重建与物理环境同步。",
-  "main": "handler.py",
-  "scripts": {
-    "start": "python3 handler.py"
+{
+  "id": "s2-memory-weaver",
+  "pluginId": "s2-memory-weaver",
+  "version": "1.0.1",
+  "type": "native-code",
+  "entry": "handler.py",
+  "runtime": "python3",
+  "configSchema": {
+    "type": "object",
+    "properties": {},
+    "required": []
   },
-  "author": "Miles Xiang & Red Anchor Lab",
-  "license": "MIT",
-  "openclaw": {
-    "compat": {
-      "pluginApi": "^1.0.0"
-    },
-    "build": {
-      "openclawVersion": "^1.0.0"
-    },
-    "extensions": [
-      "./openclaw.plugin.json"
+  "capabilities": {
+    "progressive_evolution": true,
+    "physics_anchored_i2v": true,
+    "six_elements_spatial_sync": true
+  },
+  "permissions": {
+    "tools": [
+      "upload_memory_material",
+      "generate_time_space_video",
+      "sync_historical_environment"
     ]
-  },
-  "keywords": [
-    "memory-therapy",
-    "video-generation",
-    "spatial-intelligence",
-    "alzheimers-intervention"
-  ],
-  "dependencies": {}
+  }
 }
