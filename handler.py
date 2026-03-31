@@ -13,7 +13,6 @@ class MemoryWeaverEngine:
         self.init_db()
 
     def init_db(self):
-        """初始化记忆保险库，存储素材哈希与时空节点"""
         conn = sqlite3.connect(DB_FILE)
         cursor = conn.cursor()
         cursor.execute('''
@@ -39,29 +38,22 @@ class MemoryWeaverEngine:
         conn.close()
 
     def upload_memory_material(self, params):
-        """
-        步骤S5: 补充现实素材，触发渐进式进化机制 (Progressive Evolution)
-        参考文献: 专利步骤 S5 及实施例 3 (如上传旧照片修正吊柜高度)
-        """
         session_id = params.get("session_id", "DEFAULT_MEM")
         material_desc = params.get("material_desc", "模糊老照片")
         patient_name = params.get("patient_name", "Unknown")
         
-        # 模拟素材哈希入库 (版本溯源)
         mat_hash = hashlib.sha256(f"{material_desc}_{time.time()}".encode()).hexdigest()[:12]
         
         conn = sqlite3.connect(DB_FILE)
         cursor = conn.cursor()
         
-        # 确保 Session 存在
         cursor.execute('INSERT OR IGNORE INTO memory_sessions (session_id, patient_name, ssim_score) VALUES (?, ?, ?)', 
-                       (session_id, patient_name, 0.82)) # 初始 SSIM 设为 0.82
+                       (session_id, patient_name, 0.82))
         
-        # 模拟条件 GAN 局部微调带来的 SSIM 提升 (Δmax≤0.05)
         cursor.execute('SELECT ssim_score FROM memory_sessions WHERE session_id = ?', (session_id,))
         current_ssim = cursor.fetchone()[0]
         
-        delta = min(0.04, 0.98 - current_ssim) # 模拟逼近极值
+        delta = min(0.04, 0.98 - current_ssim)
         new_ssim = round(current_ssim + delta, 3)
         
         cursor.execute('UPDATE memory_sessions SET ssim_score = ? WHERE session_id = ?', (new_ssim, session_id))
@@ -71,23 +63,15 @@ class MemoryWeaverEngine:
         conn.close()
         
         return (f"[Evolution Triggered] 现实素材已接收。版本溯源哈希: {mat_hash}。\n"
-                f"🧠 渐进式进化机制已激活：通过关键点比对，已对局部区域（<15%）进行条件 GAN 微调。\n"
-                f"📈 影像结构相似度 (SSIM) 从 {current_ssim} 提升至 {new_ssim}。影像清晰度与物理准确性已增强。")
+                f"🧠 渐进式进化机制已激活：通过关键点比对，已对局部区域（<15%）进行条件 GAN 微调模拟。\n"
+                f"📈 影像结构相似度 (SSIM) 从 {current_ssim} 提升至 {new_ssim}。")
 
     def generate_time_space_video(self, params):
-        """
-        步骤S3: 双模型协同计算 (生成物理锚定的历史影像)
-        对接外部图生视频 LLM 的包裹函数。
-        """
         session_id = params.get("session_id", "DEFAULT_MEM")
         target_year = params.get("target_year", 1998)
         
-        # 模拟双模型时空耦合计算
-        # 1. 面貌回溯: 声带长度反推 / 跨年龄颅面反推
-        # 2. 场景渲染: 环境照度计算 / 社会事件自适应标记
         video_id = f"VID_{target_year}_{int(time.time())}"
         
-        # 模拟提取历史空间六要素 (这是与世界模型联动的核心)
         historical_six_elements = {
             "Light_光": {"color_temp": 3000, "lux": 150, "desc": f"{target_year}年老式白炽灯的暖黄光"},
             "HVAC_气象": {"temp_c": 16.0, "desc": "模拟冬日无暖气房间的微冷体感"},
@@ -102,12 +86,11 @@ class MemoryWeaverEngine:
         conn.commit()
         conn.close()
         
-        return (f"🎞️ [I2V Generation Complete] 时空回溯影像已生成！视频流 ID: {video_id}。\n"
-                f"⏳ 时空锚定: {target_year}年。已执行面貌-场景光照耦合计算（瞳孔反光强度联动校准）。\n"
-                f"📦 六要素环境数据已从视频中抽离并缓存，随时可同步至当前物理空间。")
+        return (f"🎞️ [I2V Generation Complete] 时空回溯元数据已生成！视频流 ID: {video_id}。\n"
+                f"⏳ 时空锚定: {target_year}年。已执行面貌-场景光照耦合计算。\n"
+                f"📦 六要素环境数据已从视频中抽离并写入本地数据库，等待下位机拾取。")
 
     def sync_historical_environment(self, params):
-        """将视频中的历史环境六要素，强行覆盖到当前 SSSU 物理空间"""
         session_id = params.get("session_id", "DEFAULT_MEM")
         
         conn = sqlite3.connect(DB_FILE)
@@ -122,11 +105,11 @@ class MemoryWeaverEngine:
         target_year, elements_json = row[0], row[1]
         elements = json.loads(elements_json)
         
-        msg = f"🌌 [Six-Elements Sync] 时空环境同步已启动！正在将当前房间改造为 {target_year} 年的状态：\n"
+        msg = f"🌌 [Logic Plane Updated] 时空环境同步指令已记录至本地数据库，目标时空：{target_year} 年：\n"
         for k, v in elements.items():
             msg += f"  - {k}: {v['desc']}\n"
         
-        msg += "📌 [Boundary Notice] 本指令已下发至 S2-SWM 底层控制面。物理空调、灯光与音响阵列正在执行时空覆写。"
+        msg += "\n📌 [Boundary Notice] 本指令仅更新了本地逻辑控制面数据库。本插件不包含任何网络请求或设备驱动，实际的物理空调、灯光与音响阵列覆写必须由外部独立的、经手动授权的 IoT 守护进程执行。"
         return msg
 
 def main():

@@ -1,7 +1,7 @@
 {
   "name": "s2-memory-weaver",
-  "version": "1.0.1",
-  "description": "S2 时空回溯记忆引擎。结合图生视频大模型与空间六要素，通过渐进式素材上传实现高精度个人历史影像重建与物理环境同步。",
+  "version": "1.0.2",
+  "description": "S2 时空回溯记忆引擎 (Logic Plane)。结合图生视频大模型原理，通过渐进式素材上传实现个人历史影像元数据重建与物理环境同步参数缓存。",
   "main": "handler.py",
   "scripts": {
     "start": "python3 handler.py"
@@ -23,7 +23,8 @@
     "memory-therapy",
     "video-generation",
     "spatial-intelligence",
-    "alzheimers-intervention"
+    "alzheimers-intervention",
+    "openclaw-plugin"
   ],
   "dependencies": {}
 }

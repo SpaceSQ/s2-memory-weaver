@@ -1,7 +1,7 @@
 {
   "id": "s2-memory-weaver",
   "pluginId": "s2-memory-weaver",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "native-code",
   "entry": "handler.py",
   "runtime": "python3",
@@ -11,9 +11,9 @@
     "required": []
   },
   "capabilities": {
-    "progressive_evolution": true,
-    "physics_anchored_i2v": true,
-    "six_elements_spatial_sync": true
+    "progressive_evolution_sim": true,
+    "physics_anchored_i2v_sim": true,
+    "six_elements_spatial_sync_log": true
   },
   "permissions": {
     "tools": [

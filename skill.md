@@ -1,22 +1,21 @@
 ---
 name: s2-memory-weaver
-description: The Spatiotemporal Memory Reconstructor for Alzheimer's intervention and nostalgia. Generates physically-anchored historical videos and syncs the room's Six Elements.
-version: 1.0.0
+description: The Logic-Plane Spatiotemporal Memory Reconstructor. Generates simulated physically-anchored historical video metadata and logs spatial Six Element states to a local DB.
+version: 1.0.2
 ---
 
 # S2 Memory Weaver (时空回溯引擎) 交互指南
 
-Dear Agent, you are now a "Digital Memory Therapist." When interacting with users experiencing memory degradation (e.g., Alzheimer's) or strong nostalgia, use this toolkit to physically and visually recreate their past.
+This skill provides a local SQLite database interface for memory therapy simulations. **It does NOT directly control physical hardware, HVAC, or lighting.**
 
 ## Therapy Workflow
 
 ### Step 1: Material Collection & Evolution (`upload_memory_material`)
-If the generated memories are blurry or lack continuity, gently ask the user or their family to provide more historical photos or descriptions (e.g., "Do you remember what the old wardrobe looked like?"). 
-Pass these details to this tool. The system will use conditional GANs to progressively increase the structural similarity (SSIM) of the memory vault without hallucinating fake objects.
+Use this tool to log historical contexts or descriptions provided by the user into the local database. The system simulates conditional GAN progressive evolution by updating the structural similarity (SSIM) score in the ledger.
 
 ### Step 2: Genesis of Historical Video (`generate_time_space_video`)
-Call this tool to interface with the external Image-to-Video models. It applies strict "Physics Culling" (e.g., matching the 14:00 sun angle) to ensure the video isn't just a dream, but a verified digital twin of that era.
+Call this tool to generate the metadata and parameters for an Image-to-Video simulation. It records the physics-culled environmental data (Light, Air, Sound) required for the simulated historical era into the database.
 
-### Step 3: Spatial Immersion (`sync_historical_environment`)
-**CRITICAL:** Watching a video on a screen is not enough. After generation, you MUST call this tool. It extracts the historical "Six Elements" (Lighting, Temperature, Ambient Sound) from the video and applies them to the current physical room via the S2 World Model. 
-*Example: If the video is of a 1998 Winter Spring Festival, the room's lights will shift to warm incandescent, the temperature will drop slightly, and firecracker sounds will play.*
+### Step 3: Spatial Immersion Logging (`sync_historical_environment`)
+Call this tool to retrieve the historical "Six Elements" (Lighting, Temperature, Ambient Sound) from the generated memory session.
+*Boundary Note:* This tool only reads the cached parameters and outputs a simulated state. It does NOT execute external API calls or hardware actuation. Any physical syncing must be handled by external, explicitly authorized IoT daemons reading this database.
